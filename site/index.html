@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Status pages for $5. Hosted, zero setup.</title>
+<style>body{font-family:system-ui,sans-serif;max-width:820px;margin:2rem auto;padding:0 1rem;color:#222}
+table{border-collapse:collapse;width:100%}td,th{border:1px solid #ddd;padding:.5rem;text-align:left}
+.plans{display:flex;gap:1rem}.plan{flex:1;border:1px solid #ccc;border-radius:8px;padding:1rem}
+button{padding:.6rem 1rem;font-size:1rem}small{color:#666}</style></head>
+<body>
+<h1>Hosted status pages for $5</h1>
+<p>Uptime checks from 2 regions, a public status page with 90-day uptime bars, incident notes, your own domain, and email alerts. Hosted for you, with nothing to install.</p>
+
+<div class="plans">
+  <div class="plan"><h2>Hosted</h2><p><b>US$5 / month</b></p><p>1 status page, 10 monitors, custom domain, email alerts.</p>
+    <button onclick="buy('hosted')">Start hosted plan</button></div>
+  <div class="plan"><h2>Lifetime</h2><p><b>US$29 once</b></p><p>1 status page, 10 monitors, custom domain, email alerts.</p>
+    <button onclick="buy('lifetime')">Buy lifetime</button></div>
+</div>
+
+<h2>How the price compares</h2>
+<table>
+<tr><th>Product</th><th>Starting price</th><th>Source</th></tr>
+<tr><td>This product</td><td>US$5/mo or US$29 once</td><td>This page</td></tr>
+<tr><td>Atlassian Statuspage</td><td>US$29/mo (paid plans start here)</td><td><a href="https://www.atlassian.com/software/statuspage/pricing">atlassian.com/software/statuspage/pricing</a></td></tr>
+<tr><td>Instatus Pro</td><td>US$20/mo</td><td><a href="https://instatus.com/pricing">instatus.com/pricing</a></td></tr>
+</table>
+<p><small>Competitor prices were taken from their public pricing pages in October 2026 and may have changed. Check the linked pages for current pricing. Feature sets differ; this product does not include SMS, SSO or team accounts.</small></p>
+
+<h2>Sign in</h2>
+<form onsubmit="login(event)"><input id="email" type="email" placeholder="you@example.com" required> <button>Email me a sign-in link</button></form>
+<p id="msg"></p>
+<script>
+const API = window.API_URL || "";
+async function buy(plan){const email=prompt("Email for your receipt");if(!email)return;
+ const r=await fetch(API+"/checkout",{method:"POST",body:JSON.stringify({plan,email})});const j=await r.json();
+ if(j.url)location=j.url;else document.getElementById("msg").textContent="Checkout is not configured yet.";}
+async function login(e){e.preventDefault();await fetch(API+"/login",{method:"POST",body:JSON.stringify({email:document.getElementById("email").value})});
+ document.getElementById("msg").textContent="If that address has an account, a sign-in link is on its way.";}
+</script>
+</body></html>
